@@ -42,7 +42,15 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
-  return Invalid;
+  if((row >= 0 && row < 3) && (column >= 0 && column < 3)) {
+    Piece piece;
+    piece = board[row][column];
+    return piece;
+  }
+
+  else {
+    return Invalid;
+  }
 }
 
 /**

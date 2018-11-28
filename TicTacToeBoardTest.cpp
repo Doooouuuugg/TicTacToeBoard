@@ -14,9 +14,20 @@ class TicTacToeBoardTest : public ::testing::Test
 		virtual void TearDown(){} //clean up after each test, (before destructor) 
 };
 
-/* EXAMPLE TEST FORMAT
-TEST(TicTacToeBoardTest, unitTestName)
+// out of bounds test
+TEST(TicTacToeBoardTest, pieceOutOfBounds)
 {
-	ASSERT_TRUE(true);
+	TicTacToeBoard obj;
+	Piece outcome = Blank;
+	outcome = obj.getPiece(100,100);
+	ASSERT_EQ(outcome, Invalid);
 }
-*/
+
+// in bounds test
+TEST(TicTacToeBoardTest, pieceInBounds)
+{
+	TicTacToeBoard obj;
+	Piece outcome;
+	outcome = obj.getPiece(2,2);
+	ASSERT_EQ(outcome, Blank);
+}
