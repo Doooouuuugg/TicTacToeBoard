@@ -19,7 +19,11 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+  if (turn == X) {
+    return O;
+  }
+  
+  return X;
 }
 
 /**
@@ -33,6 +37,23 @@ Piece TicTacToeBoard::toggleTurn()
 **/ 
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
+  Piece holder = this->getWinner();
+  if ((holder != X) || (holder != O))
+  {
+    if ((row < 0 || row >= 3) || (column < 0 || column >= 3)) {
+      return Invalid;
+    }
+  
+    if (board[row][column] == Blank) {
+      board[row][column] = turn;
+      toggleTurn();
+      return board[row][column];
+    }
+    
+    if (board[row][column] == X || board[row][column] == O) {
+      return board[row][column];
+    }
+  }
   return Invalid;
 }
 
@@ -43,9 +64,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
   if((row >= 0 && row < 3) && (column >= 0 && column < 3)) {
-    Piece piece;
-    piece = board[row][column];
-    return piece;
+    return board[row][column];
   }
 
   else {
@@ -59,5 +78,29 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  return Invalid;
+   // Check for horizontal winner.
+  for (int i = 0; i < 3; i++) {
+    if (board[0][i] != Blank && board[0][i] == board[1][i] && board[1][i] == board[2][i])
+      return board[0][i];
+  }
+  
+  // Check for vertical winner.
+  for (int i = 0; i < 3; i++) {
+    if (board[i][0] != Blank && board[i][0] == board[i][1] && board[i][1] == board[i][2])
+      return board[i][0];
+  }
+  
+  // Check for diagonal winner.
+  if (board[1][1] != Blank && board[0][0] == board[1][1] && board[1][1] == board[2][2])
+    return board[1][1];
+  if (board[1][1] != Blank && board[2][0] == board[1][1] && board [1][1] == board[0][2])
+    return board[1][1];
+    
+  // Check if the game is invalid.
+  for (int i = 0; i < BOARDSIZE; i++)
+    for (int ii = 0; ii < BOARDSIZE; ii++)
+      if (board[i][ii] == Blank)
+        return Invalid;
+        
+  return Blank;
 }
